@@ -1,0 +1,45 @@
+# -------------------------------------
+# Node Modules & Build Artifacts
+# -------------------------------------
+node_modules/
+dist/
+build/
+.tmp/
+.temp/
+
+# -------------------------------------
+# Environment & Secret Files
+# -------------------------------------
+*.env
+.env
+.env.local
+config.env
+backend/config/config.env
+
+# -------------------------------------
+# Logs
+# -------------------------------------
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# -------------------------------------
+# System / OS Files
+# -------------------------------------
+.DS_Store
+Thumbs.db
+
+# -------------------------------------
+# VS Code
+# -------------------------------------
+.vscode/
+.history/
+
+# -------------------------------------
+# Optional: If you use uploads locally
+# -------------------------------------
+uploads/
+public/uploads/
