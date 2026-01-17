@@ -12,7 +12,7 @@ import appointmentRouter from "./router/appointmentRouter.js"
 const app = express();
 config({path:"./config/config.env"});
 
-import cors from "cors";
+
 
 const allowedOrigins = [
   "http://localhost:5173", // Vite dev
