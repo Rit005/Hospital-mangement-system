@@ -1,17 +1,42 @@
+import jwt from "jsonwebtoken";
+
 export const generateToken = (user, message, statusCode, res) => {
-  const token = user.generateJsonWebToken();
-  const cookieName = user.role === "Admin" ? "adminToken" : "patientToken";
+  // 🔑 Generate JWT
+  const token = jwt.sign(
+    { id: user._id },
+    process.env.JWT_SECRET, // ✅ MUST match Render env
+    {
+      expiresIn: process.env.JWT_EXPIRE,
+    }
+  );
 
-  const cookieExpire = process.env.COOKIE_EXPIRE || 7; // ✅ fallback
-
-  res.status(statusCode).cookie(cookieName, token, {
-    expires: new Date(Date.now() + cookieExpire * 24 * 60 * 60 * 1000),
+  // 🍪 Cookie options (PRODUCTION SAFE)
+  const cookieOptions = {
     httpOnly: true,
-    sameSite: "lax",
-  }).json({
-    success: true,
-    message,
-    user,
-    token
-  });
+    secure: true,      // REQUIRED for HTTPS (Vercel)
+    sameSite: "none",  // REQUIRED for cross-domain
+    expires: new Date(
+      Date.now() +
+        process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+    ),
+  };
+
+  // 🎯 Send token based on role
+  if (user.role === "Admin") {
+    res.status(statusCode)
+      .cookie("adminToken", token, cookieOptions)
+      .json({
+        success: true,
+        message,
+        user,
+      });
+  } else {
+    res.status(statusCode)
+      .cookie("patientToken", token, cookieOptions)
+      .json({
+        success: true,
+        message,
+        user,
+      });
+  }
 };

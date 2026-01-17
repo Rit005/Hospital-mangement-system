@@ -21,19 +21,15 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow server-to-server, Postman, curl
-    if (!origin) return callback(null, true);
-
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-}));
+    origin: [
+      "https://hospital-management-blond-eta.vercel.app",
+      process.env.FRONTEND_URL,
+      process.env.DASHBOARD_URL
+    ],
+    methods: ["GET","POST","PUT","DELETE"],
+    credentials: true
+  }));
+  
 
 
 
