@@ -12,11 +12,30 @@ import appointmentRouter from "./router/appointmentRouter.js"
 const app = express();
 config({path:"./config/config.env"});
 
+import cors from "cors";
+
+const allowedOrigins = [
+  "http://localhost:5173", // Vite dev
+  "http://localhost:3000", // optional
+  "https://hospital-management-blond-eta.vercel.app"
+];
+
 app.use(cors({
-    origin:[process.env.FRONTEND_URL,process.env.DASHBOARD_URL,"http://localhost:4000"],
-    methods:["GET","POST","PUT","DELETE"],
-    credentials:true,
-}))
+  origin: function (origin, callback) {
+    // Allow server-to-server, Postman, curl
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+}));
+
+
 
 app.use(cookieParser());
 app.use(express.json());
