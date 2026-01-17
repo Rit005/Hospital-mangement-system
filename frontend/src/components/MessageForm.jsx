@@ -33,7 +33,7 @@ const MessageForm = () => {
       setLoading(true);
 
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/message/send",
+        "https://hospital-mangement-system-58iq.onrender.com/api/v1/message/send",
         { firstName, lastName, message, phone, email },
         { withCredentials: true, headers: { "Content-Type": "application/json" } }
       );
