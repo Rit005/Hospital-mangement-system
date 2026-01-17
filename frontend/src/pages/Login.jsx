@@ -1,56 +1,111 @@
-import React, { useContext, useState } from 'react'
-import { Context } from '../main';
-import { useNavigate, Link, Navigate } from 'react-router-dom';
+import React, { useContext, useState } from "react";
+import { Context } from "../main";
+import { useNavigate, Link, Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigateTo = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (loading) return;
+
+    setLoading(true);
+
     try {
-      const response = await axios.post(
+      const { data } = await axios.post(
         "http://localhost:4000/api/v1/user/login",
-        { email, password, confirmPassword, role: "Patient" },
-        { withCredentials: true, headers: { "Content-Type": "application/json" } }
+        { email, password, role: "Patient" },
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
+        }
       );
-      toast.success(response.data.message);
+
+      toast.success(data.message || "Login successful");
       setIsAuthenticated(true);
       navigateTo("/");
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
+
   if (isAuthenticated) {
-    return <Navigate to={"/"} />;
+    return <Navigate to="/" />;
   }
 
-
   return (
-    <div className='container form-component login-form'>
+    <div className="container form-component login-form">
       <h2>Sign In</h2>
       <p>Please login to continue</p>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, accusantium voluptatem dicta quia repellat illo.</p>
+
       <form onSubmit={handleLogin}>
-        <input type="text" placeholder='Email'  value={email} onChange={(e)=>setEmail(e.target.value)}/>
-        <input type="password" placeholder='Password'  value={password} onChange={(e)=>setPassword(e.target.value)} />
-        <input type="password" placeholder='confirmPassword'  value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)} />
-        <div style={{gap:"10px",justifyContent:"flex-end",flexDirection:"row"}}>
-          <p style={{marginBottom:0}}>Not Registered?</p>
-          <Link to={"/register"} style={{textDecoration:"none",alignItems:"center"}}>Register Now</Link>
+        {/* Email */}
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          required
+          disabled={loading}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        {/* Password */}
+        <div style={{ position: "relative", width: "100%" }}>
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            value={password}
+            required
+            disabled={loading}
+            onChange={(e) => setPassword(e.target.value)}
+            style={{ paddingRight: "42px" }}
+          />
+
+          <span
+            onClick={() => !loading && setShowPassword(!showPassword)}
+            style={{
+              position: "absolute",
+              right: "14px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              cursor: loading ? "not-allowed" : "pointer",
+              color: "#555",
+              fontSize: "18px",
+            }}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
         </div>
-        <div style={{alignItems:"center",justifyContent:"center"}}>
-          <button>Login</button>
-        </div>
+
+        {/* Register */}
+      {/* Button */}
+<div className="login-btn-wrapper">
+  <button type="submit" disabled={loading}>
+    {loading ? "Logging in..." : "Login"}
+  </button>
+</div>
+
+<div className="register-row">
+  <span className="register-text">Not Registered?</span>
+  <Link to="/register" className="register-link">Register Now</Link>
+</div>
+
+
       </form>
     </div>
-  )
-}
+  );
+};
 
 export default Login;

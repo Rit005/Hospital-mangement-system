@@ -587,3 +587,206 @@ input[type="time"]:before {
 footer .logo-img{
   width: 100%;
 }
+
+/* ============================= */
+/* LOGIN PAGE STYLING */
+/* ============================= */
+
+.form-component.login-form {
+  min-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: loginFade 0.9s ease forwards;
+}
+.form-component.login-form h2 {
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.form-component.login-form p {
+  color: #777;
+  margin-bottom: 25px;
+}
+
+.form-component.login-form form {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Inputs */
+.form-component.login-form input {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.form-component.login-form input:focus {
+  border-color: #6c63ff;
+  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.15);
+  transform: scale(1.01);
+}
+
+/* Password eye icon */
+.form-component.login-form span {
+  transition: 0.3s ease;
+}
+
+.form-component.login-form span:hover {
+  color: #6c63ff;
+  transform: scale(1.15);
+}
+
+/* Login button */
+.form-component.login-form button {
+  width: 160px;
+  margin-top: 10px;
+  padding: 12px 0;
+  font-size: 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #6c63ff, #8f88ff);
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(108, 99, 255, 0.3);
+}
+
+.form-component.login-form button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(108, 99, 255, 0.4);
+}
+
+.form-component.login-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+/* Center full login card */
+.login-form {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Button center + animation */
+.login-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.login-btn-wrapper button {
+  background: linear-gradient(135deg, #7b73ff, #5f5bff);
+  color: white;
+  border: none;
+  padding: 12px 40px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(123, 115, 255, 0.3);
+}
+
+.login-btn-wrapper button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(123, 115, 255, 0.45);
+}
+
+.login-btn-wrapper button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Register line centered */
+.register-row {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;   /* ✅ makes text sit on same line */
+  gap: 6px;                /* ✅ tighter spacing */
+  margin-top: 14px;
+  font-size: 17px;
+  color: #777;
+}
+
+.register-text {
+  font-weight: 400;
+}
+
+.register-link {
+  color: #6c63ff;
+  font-weight: 500;        /* ✅ not too bold */
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.register-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0%;
+  height: 2px;
+  background: #6c63ff;
+  transition: width 0.3s ease;
+}
+
+.register-link:hover {
+  color: #4f46e5;
+}
+
+.register-link:hover::after {
+  width: 100%;             /* ✅ smooth underline animation */
+}
+
+
+.register-row span {
+  margin: 0;       /* ✅ removes default spacing */
+  padding: 0;
+}
+
+.register-row a {
+  color: #6c63ff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.register-row a:hover {
+  color: #4f46e5;
+  text-decoration: underline;
+}
+
+
+/* Inputs smooth effect */
+.login-form input {
+  transition: all 0.3s ease;
+}
+
+.login-form input:focus {
+  border-color: #6c63ff;
+  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.15);
+}
+
+/* Fade animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

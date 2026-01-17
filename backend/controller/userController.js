@@ -22,30 +22,28 @@ export const patientRegister = catchAsyncErrors(async(req,res,next)=>{
 });
 
 
-export const login = catchAsyncErrors(async(req,res,next)=>{
-    const {email,password,confirmPassword,role} = req.body;
-    if(!email || !password || !confirmPassword || !role){
-        return next(new ErrorHandler("please provide all details!",400))
+export const login = catchAsyncErrors(async (req, res, next) => {
+  const { email, password, role } = req.body;
 
-    };
-    if(password !== confirmPassword){
-        return next(new ErrorHandler("password and confirmpassword donot match!",400));
+  if (!email || !password || !role) {
+    return next(new ErrorHandler("please provide all details!", 400));
+  }
 
-    };
-    const user = await User.findOne({email}).select("+password");
-    if(!user){
-        return next(new ErrorHandler("Invalid password or Email!",400));
-    };
+  const user = await User.findOne({ email }).select("+password");
+  if (!user) {
+    return next(new ErrorHandler("Invalid email or password!", 400));
+  }
 
-    const isPasswordMatched =  await user.confirmPassword(password);
-    if(!isPasswordMatched){
-        return next(new ErrorHandler("Invalid password or Email!",400));
-    }
+  const isPasswordMatched = await user.comparePassword(password);
+  if (!isPasswordMatched) {
+    return next(new ErrorHandler("Invalid email or password!", 400));
+  }
 
-    if(role !== user.role ){
-        return next(new ErrorHandler("User with this role not found!",400));
-    };
-    generateToken(user,"User logged in succesfully!", 200 , res);
+  if (role !== user.role) {
+    return next(new ErrorHandler("User with this role not found!", 400));
+  }
+
+  generateToken(user, "User logged in successfully!", 200, res);
 });
 
 

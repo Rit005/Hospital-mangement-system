@@ -5,7 +5,7 @@ import Appointment from "./pages/Appointment";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import About from "./pages/About";
-import Home from "./pages/home";
+import Home from "./pages/Home.jsx";
 import { ToastContainer} from 'react-toastify';
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
