@@ -17,5 +17,3 @@ const server = app.listen(process.env.PORT, () => {
     console.log(`✅ Server is running on port ${process.env.PORT}`);
     console.log(`📍 Health check: http://localhost:${process.env.PORT}/api/v1/health`);
 });
-
-
