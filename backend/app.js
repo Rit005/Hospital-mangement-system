@@ -1,63 +1,65 @@
 import express from "express";
-import {config} from "dotenv";
+import { config } from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 import { dbConnection } from "./database/dbConnection.js";
 import messageRouter from "./router/messageRouter.js";
-import { errorMiddleware } from "./middlewares/errorMiddleware.js"
-import userRouter from "./router/userRouter.js"
-import appointmentRouter from "./router/appointmentRouter.js"
+import userRouter from "./router/userRouter.js";
+import appointmentRouter from "./router/appointmentRouter.js";
+import { errorMiddleware } from "./middlewares/errorMiddleware.js";
+
+config({ path: "./config/config.env" });
 
 const app = express();
-config({path:"./config/config.env"});
 
-
-
+/* ✅ ALLOWED ORIGINS */
 const allowedOrigins = [
-  "http://localhost:5173", // Vite dev
-  "http://localhost:3000", // optional
-  "https://hospital-management-blond-eta.vercel.app"
+  "http://localhost:5173",
+  "https://hospital-management-blond-eta.vercel.app",
 ];
 
-app.use(cors({
-    origin: [
-      "https://hospital-management-blond-eta.vercel.app",
-      process.env.FRONTEND_URL,
-      process.env.DASHBOARD_URL
-    ],
-    methods: ["GET","POST","PUT","DELETE"],
-    credentials: true
-  }));
-  
-
-
+/* ✅ CORS CONFIG (CRITICAL) */
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS not allowed"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
-app.use(fileUpload({
-    useTempFiles:true,
-    tempFileDir:"/tmp/",
-})
+app.use(express.urlencoded({ extended: true }));
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  })
 );
 
-
-// Health check endpoint
+/* ✅ HEALTH CHECK */
 app.get("/api/v1/health", (req, res) => {
-    res.status(200).json({
-        success: true,
-        message: "Server is running successfully",
-        timestamp: new Date().toISOString()
-    });
+  res.status(200).json({
+    success: true,
+    message: "Server running",
+  });
 });
 
-app.use("/api/v1/message",messageRouter);
-app.use("/api/v1/user",userRouter);
-app.use("/api/v1/appointment",appointmentRouter)
+/* ROUTES */
+app.use("/api/v1/message", messageRouter);
+app.use("/api/v1/user", userRouter);
+app.use("/api/v1/appointment", appointmentRouter);
 
+/* DB */
 dbConnection();
 
-app.use(errorMiddleware)
+/* ERROR HANDLER */
+app.use(errorMiddleware);
 
 export default app;
