@@ -66,3 +66,51 @@ This project allows users to book appointments, send messages, and enables admin
 
 ## 📂 Project Structure
 
+Hospital-Management-System/
+│
+├── frontend/
+│ ├── public/
+│ ├── src/
+│ │ ├── components/
+│ │ ├── pages/
+│ │ ├── routes/
+│ │ ├── axios.js
+│ │ ├── App.jsx
+│ │ └── main.jsx
+│
+├── backend/
+│ ├── controller/
+│ ├── router/
+│ ├── models/
+│ ├── middlewares/
+│ ├── utils/
+│ ├── app.js
+│ └── server.js
+│
+└── README.md
+
+🧪 Run Locally
+1️⃣ Clone Repository
+git clone https://github.com/your-username/hospital-management-system.git
+cd hospital-management-system
+
+2️⃣ Backend Setup
+cd backend
+npm install
+npm run dev
+
+
+Backend will run on:
+
+http://localhost:4000
+
+3️⃣ Frontend Setup
+cd frontend
+npm install
+npm run dev
+
+
+Frontend will run on:
+
+http://localhost:5173
+
