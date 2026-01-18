@@ -1,31 +1,53 @@
-import { useContext, useEffect } from "react";
-import axios from "axios";
+import React, { useContext, useEffect } from "react";
+import "./App.css";
+import {BrowserRouter as Router,Route,Routes}  from "react-router-dom"
+import Appointment from "./pages/Appointment";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import About from "./pages/About";
+import Home from "./pages/Home.jsx";
+import { ToastContainer} from 'react-toastify';
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import { Context } from "./main";
-import Routes from "./Routes"; // or whatever routing file you use
+import axios from "axios";
 
-const App = () => {
-  const { setIsAuthenticated, setUser } = useContext(Context);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get(
-          "https://hospital-mangement-system-58iq.onrender.com/api/v1/user/patient/me",
-          { withCredentials: true }
-        );
-
-        setUser(res.data.user);
+const App = () =>{
+  const {isAuthenticated,setIsAuthenticated,setUser} = useContext(Context);
+  useEffect(()=>{
+    const fetchUser = async()=>{
+      try{
+        const response = await axios.get(" https://hospital-mangement-system-58iq.onrender.com/api/v1/user/patient/me",{withCredentials:true});
         setIsAuthenticated(true);
-      } catch (error) {
-        setIsAuthenticated(false);
-        setUser({});
+        setUser(response.data.user)
+
+      }catch(error){
+        setIsAuthenticated(false)
+        setUser({})
+
       }
     };
-
     fetchUser();
-  }, []);
+  },[isAuthenticated])
+  return (
+    
+    <div>
+      <>
+        <Router>
+          <Navbar/>
+          <Routes>
+            <Route path="/" element={<Home/>}/>
+            <Route path="/appointment" element={<Appointment/>}/>
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/register" element={<Register/>}/>
+            <Route path="/about" element={<About/>}/>
+          </Routes>
+          <Footer/>
+          <ToastContainer position="top-center"/>
+        </Router>
+      </>
 
-  return <Routes />;
-};
-
+    </div>
+  )
+}
 export default App;

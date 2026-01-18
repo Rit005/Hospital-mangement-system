@@ -1,11 +1,9 @@
 import axios from "axios";
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Context } from "../main";
 
 const AppointmentForm = () => {
-  const { isAuthenticated } = useContext(Context);
   const navigateTo = useNavigate();
 
   const [firstName, setFirstName] = useState("");
@@ -34,14 +32,7 @@ const AppointmentForm = () => {
   const handleAppointment = async (e) => {
     e.preventDefault();
 
-    // ✅ Not logged in
-    if (!isAuthenticated) {
-      toast.error("Please login first to book an appointment");
-      navigateTo("/login");
-      return;
-    }
-
-    // ✅ Empty field check
+    // ✅ Validation only (NO AUTH)
     if (
       !firstName ||
       !email ||
@@ -58,7 +49,7 @@ const AppointmentForm = () => {
 
     try {
       const { data } = await axios.post(
-        " https://hospital-mangement-system-58iq.onrender.com/api/v1/appointment/post",
+        "https://hospital-mangement-system-58iq.onrender.com/api/v1/appointment/post",
         {
           firstName,
           lastName,
@@ -72,14 +63,12 @@ const AppointmentForm = () => {
           address,
         },
         {
-          withCredentials: true,
           headers: { "Content-Type": "application/json" },
         }
       );
 
       toast.success(data.message || "Appointment booked successfully");
       navigateTo("/");
-
     } catch (error) {
       toast.error(error?.response?.data?.message || "Booking failed");
     }
@@ -89,13 +78,6 @@ const AppointmentForm = () => {
     <div className="appointment-wrapper">
       <div className="appointment-card">
         <h2>Book Appointment</h2>
-
-        {/* ✅ login message */}
-        {!isAuthenticated && (
-          <p className="login-warning">
-            ⚠ Please sign in to book an appointment
-          </p>
-        )}
 
         <form onSubmit={handleAppointment}>
           <div className="form-row">
@@ -150,10 +132,15 @@ const AppointmentForm = () => {
               <option>Female</option>
             </select>
 
-            <select value={department} onChange={(e) => setDepartment(e.target.value)}>
+            <select
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+            >
               <option value="">Select Department *</option>
               {departmentsArray.map((d, i) => (
-                <option key={i} value={d}>{d}</option>
+                <option key={i} value={d}>
+                  {d}
+                </option>
               ))}
             </select>
           </div>
